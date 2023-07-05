@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { AuthContext } from "../../App";
 
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-export default function SignUpForm(){
+export default function LoginForm(){
     
     const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -30,11 +30,11 @@ export default function SignUpForm(){
         .catch(err => alert(err.message))
     }
 
-    const handleSignup = (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        createUserWithEmailAndPassword(auth, email, password)
+        signInWithEmailAndPassword(auth, email, password)
             .then(response => {
                 setUser(response.user);
                 navigate("/");
@@ -43,7 +43,7 @@ export default function SignUpForm(){
     }
     return (
         <main>
-        <form onSubmit={handleSignup}>
+        <form onSubmit={handleLogin}>
             <label htmlFor="email">
             Email
             <input type="email" name="email" />
@@ -54,9 +54,9 @@ export default function SignUpForm(){
             <input type="password" name="password" />
         </label>
         <br />
-        <input type="submit" value="Sign Up" />
+        <input type="submit" value="Login" />
         </form>
-        <button onClick={handleGoogle}>Sign Up with Google</button>
+        <button onClick={handleGoogle}>Login with Google</button>
         </main>
     )
 }
