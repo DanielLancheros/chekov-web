@@ -1,10 +1,9 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { AuthContext } from "../App";
 
-export default function ToDoList() {
+export default function ToDoList({ ToDoItems, setToDoItems }) {
     const { user } = useContext(AuthContext);
-    const [toDoItems, setToDoItems] = useState();
-
+    console.log(user.uid)
     useEffect( () => {
         if(user) {
             fetch(`https://chekov-api-dl.web.app/tasks/${user.uid}`)
@@ -14,11 +13,11 @@ export default function ToDoList() {
         }
     }, [user]);
 
-    if(!toDoItems) return <h2>Loading...</h2>
+    if(!ToDoItems) return <h2>Loading...</h2>
 
     return(
 <section>
-    {toDoItems.map(item => (
+    {ToDoItems.map(item => (
         <p key={item.id}>{item.title}</p>
     ))}
 </section>
